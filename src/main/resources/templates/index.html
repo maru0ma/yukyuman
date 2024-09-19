@@ -3,12 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>top page</title>
+    <title>有給管理システム</title>
 </head>
 <body>
-    <h1>Hello Page</h1>
-    <p th:text="${'<h1>textの表示</h1>'}"></p>
-    <div th:text="${message}"></div>
-    
+    <h1>有給管理システム</h1>
+    <div>残日数</div>
+    <div th:text="${restDays}"></div>
+    <div>必須取得日数</div>
+    <div th:text="${exactlyGetDays}"></div>
+    <div>3ヶ月で消滅する日数</div>
+    <div th:text="${disappearanceDays}"></div>
+
+    <div><a th:href="@{/entry}">有給付与</a></div>
+    <div><a th:href="@{/}">有給消化</a></div>
+    <div><a th:href="@{/}">詳細情報</a></div>
 </body>
 </html>
