@@ -8,6 +8,23 @@
 <body>
     <h1>有給付与</h1>
 
+    <form action="/entry" method="post">
+        <label for="vacationType">有給種別</label>
+        <select name="vacationType" id="vacationType">
+            <option value="normal">有給休暇</option>
+            <option value="summer">夏季休暇</option>
+            <option value="birthday">バースデー休暇</option>
+        </select>
+        <label for="numberOfDays">付与日数</label>
+        <input type="number" name="numberOfDays" id="numberOfDays">
+        <label for="vacationDeadline">休暇取得期限</label>
+        <input type="date" name="vacationDeadline" id="vacationDeadline">
+        <button type="submit">登録</button>
+
+        <div th:text="${message}"></div>
+
+    </form>
     <div><a th:href="@{/}">TOPに戻る</a></div>
 </body>
 </html>
+
