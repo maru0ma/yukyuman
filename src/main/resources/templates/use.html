@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>有給管理システム</title>
+</head>
+<body>
+    <h1>有給消化</h1>
+
+    <form action="/use" method="post">
+        <label for="vacationGetDate">取得日</label>
+        <input type="date" name="vacationGetDate" id="vacationGetDate">
+        <label for="vacationType">有給種別</label>
+        <select name="vacationType" id="vacationType">
+            <option value="normal">有給休暇</option>
+            <option value="summer">夏季休暇</option>
+            <option value="birthday">バースデー休暇</option>
+        </select>
+        <label for="vacationSection">区分</label>
+        <select name="vacationSection" id="vacationSection">
+            <option value="full">全日</option>
+            <option value="am">午前</option>
+            <option value="pm">午後</option>
+        </select>
+        <label for="vacationGetNote">メモ</label>
+        <input type="text" name="vacationGetNote" id="vacationGetNote">
+        <button type="submit">登録</button>
+
+        <div th:text="${message}"></div>
+
+    </form>
+
+    <div><a th:href="@{/}">TOPに戻る</a></div>
+</body>
+</html>
