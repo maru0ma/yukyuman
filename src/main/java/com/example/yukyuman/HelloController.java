@@ -1,5 +1,8 @@
 package com.example.yukyuman;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -9,6 +12,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class HelloController {
+
+    @Autowired
+    VacationListRepositry vacationListRepositry;
     
     @GetMapping("/")
     public ModelAndView index(ModelAndView mav) {
@@ -16,6 +22,8 @@ public class HelloController {
         mav.addObject("restDays",5);
         mav.addObject("exactlyGetDays",2);
         mav.addObject("disappearanceDays",1);
+        List<VacationData> list = vacationListRepositry.findAll();
+        System.out.println(list);
         return mav;
     }
 
@@ -34,6 +42,13 @@ public class HelloController {
         System.out.println(vacationEntry.getNumberOfDays());
         System.out.println(vacationEntry.getVacationDeadline());
         mav.addObject("message","登録しました");
+        
+        VacationData vacationData = new VacationData();
+        vacationData.setVacationType(vacationEntry.getVacationType());
+        vacationData.setNumberOfDays(vacationEntry.getNumberOfDays());
+        vacationData.setVacationDeadline(vacationEntry.getVacationDeadline());
+        
+        vacationListRepositry.saveAndFlush(vacationData);
         return mav;
     }
 
