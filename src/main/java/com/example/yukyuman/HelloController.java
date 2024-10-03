@@ -80,8 +80,8 @@ public class HelloController {
         // DBに登録
         useDataRepositry.saveAndFlush(useDataEntity);
 
-        List<UseDataEntity> dbData = useDataRepositry.findAll();
-        System.out.println(dbData);
+        // List<UseDataEntity> dbData = useDataRepositry.findAll();
+        // System.out.println(dbData);
 
         return mav;
     }
@@ -89,6 +89,12 @@ public class HelloController {
     @GetMapping("/detailInf")
     public ModelAndView detailInf(ModelAndView mav) {
         mav.setViewName("detail_inf"); 
+       
+        List<VacationData> vacations = vacationListRepositry.findAll();
+        mav.addObject("vacationList", vacations);
+
+        List<UseDataEntity> dbData = useDataRepositry.findAll();
+        System.out.println(dbData);
         return mav;
     } 
 

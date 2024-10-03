@@ -7,6 +7,35 @@
 </head>
 <body>
     <h1>詳細情報</h1>
+    <div>
+        <h2>有給休暇一覧</h2>
+        
+        <table>
+            <thead>
+              <tr>
+                <th>有給ID</th>
+                <th>有給種別</th>
+                <th>付与日数</th> 
+                <th>残り日数</th>
+                <th>有効期限</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="vacation : ${vacationList}">
+                <td th:text="${vacation.vacationId}"></td>
+                <td th:text="${vacation.vacationType}"></td>
+                <td th:text="${vacation.numberOfDays}"></td>
+                <td th:text="${vacation.daysRemaining}"></td>
+                <td th:text="${vacation.vacationDeadline}"></td>
+              </tr>
+            </tbody>
+          </table>
+
+    </div>
+    <div>
+        <h2>取得履歴</h2>
+
+    </div>
 
     <div><a th:href="@{/}">TOPに戻る</a></div>
 </body>
