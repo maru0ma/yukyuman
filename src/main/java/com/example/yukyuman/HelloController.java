@@ -15,6 +15,9 @@ public class HelloController {
 
     @Autowired
     VacationListRepositry vacationListRepositry;
+
+    @Autowired
+    UseDataRepositry useDataRepositry;
     
     @GetMapping("/")
     public ModelAndView index(ModelAndView mav) {
@@ -61,12 +64,25 @@ public class HelloController {
     @PostMapping("/use")
     public ModelAndView postUse(ModelAndView mav, @ModelAttribute UseData useData) {
         mav.setViewName("use");
-        System.out.println("登録しました");
-        System.out.println(useData.getVacationGetDate());
-        System.out.println(useData.getVacationType());
-        System.out.println(useData.getVacationSection());
-        System.out.println(useData.getVacationGetNote());
+        // System.out.println("登録しました");
+        // System.out.println(useData.getVacationGetDate());
+        // System.out.println(useData.getVacationType());
+        // System.out.println(useData.getVacationSection());
+        // System.out.println(useData.getVacationGetNote());
         mav.addObject("message","登録しました");
+
+        // DBに登録するためのデータを組み立てる
+        UseDataEntity useDataEntity = new UseDataEntity();
+        useDataEntity.setVacationData(useData.getVacationGetDate());
+        useDataEntity.setVacationType(useData.getVacationType());
+        useDataEntity.setVacationSection(useData.getVacationSection());
+        useDataEntity.setVacationGetNote(useData.getVacationGetNote());
+        // DBに登録
+        useDataRepositry.saveAndFlush(useDataEntity);
+
+        List<UseDataEntity> dbData = useDataRepositry.findAll();
+        System.out.println(dbData);
+
         return mav;
     }
 
