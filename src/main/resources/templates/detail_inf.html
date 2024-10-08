@@ -34,6 +34,26 @@
     </div>
     <div>
         <h2>取得履歴</h2>
+        <table>
+            <thead>
+              <tr>
+                <th>休暇取得ID</th>
+                <th>休暇取得日</th>
+                <th>休暇種別</th> 
+                <th>休暇区分</th>
+                <th>メモ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="dbDatas : ${useData}">
+                <td th:text="${dbDatas.vacationGetId}"></td>
+                <td th:text="${dbDatas.vacationData}"></td>
+                <td th:text="${dbDatas.vacationType}"></td>
+                <td th:text="${dbDatas.vacationSection}"></td>
+                <td th:text="${dbDatas.vacationGetNote}"></td>
+              </tr>
+            </tbody>
+          </table>
 
     </div>
 

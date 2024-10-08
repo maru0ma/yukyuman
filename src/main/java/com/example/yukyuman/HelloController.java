@@ -39,18 +39,20 @@ public class HelloController {
 
     @PostMapping("/entry")
     public ModelAndView postEntry(ModelAndView mav, @ModelAttribute VacationEntry vacationEntry) {
+        // HTMLのファイル名を設定
         mav.setViewName("entry");
-        System.out.println("登録しました");
-        System.out.println(vacationEntry.getVacationType());
-        System.out.println(vacationEntry.getNumberOfDays());
-        System.out.println(vacationEntry.getVacationDeadline());
+        
+        // 登録ボタン押下時にメッセージを表示
         mav.addObject("message","登録しました");
         
+        // POSTされたデータから値を取得してDB用にEntityを作成
         VacationData vacationData = new VacationData();
         vacationData.setVacationType(vacationEntry.getVacationType());
         vacationData.setNumberOfDays(vacationEntry.getNumberOfDays());
         vacationData.setVacationDeadline(vacationEntry.getVacationDeadline());
+        vacationData.setDaysRemaining(vacationEntry.getNumberOfDays());
         
+        // DBに登録
         vacationListRepositry.saveAndFlush(vacationData);
         return mav;
     }
@@ -63,38 +65,82 @@ public class HelloController {
 
     @PostMapping("/use")
     public ModelAndView postUse(ModelAndView mav, @ModelAttribute UseData useData) {
+        // HTMLのファイル名を設定
         mav.setViewName("use");
-        // System.out.println("登録しました");
-        // System.out.println(useData.getVacationGetDate());
-        // System.out.println(useData.getVacationType());
-        // System.out.println(useData.getVacationSection());
-        // System.out.println(useData.getVacationGetNote());
+        
+        // 登録ボタン押下時にメッセージを表示
         mav.addObject("message","登録しました");
 
-        // DBに登録するためのデータを組み立てる
+        // POSTされたデータから値を取得してDB用にEntityを作成
         UseDataEntity useDataEntity = new UseDataEntity();
         useDataEntity.setVacationData(useData.getVacationGetDate());
         useDataEntity.setVacationType(useData.getVacationType());
         useDataEntity.setVacationSection(useData.getVacationSection());
         useDataEntity.setVacationGetNote(useData.getVacationGetNote());
+        
         // DBに登録
         useDataRepositry.saveAndFlush(useDataEntity);
 
-        // List<UseDataEntity> dbData = useDataRepositry.findAll();
-        // System.out.println(dbData);
+        
+        // 有給休暇一覧DBから現在の値を取得
+        List<VacationData> vacations = vacationListRepositry.findAll();
+        
+        /*
+            更新するレコードの条件
+            1.休暇取得が同じ
+            2.有効期限内である
+            3.残り日数がある
+            4.上記の中で一番古いもの1件分 ※あとで実装
+         */
+        VacationData matchRecord = null;
+        for (VacationData vacationData : vacations) {
+            String vacationType = vacationData.getVacationType();
+            String vacationDeadline = vacationData.getVacationDeadline();
+            
+            // 休暇取得が同じでない場合はスキップ
+            if (!vacationType.equals(useData.getVacationType())) {
+                continue;
+            }
+            // 有効期限外の場合はスキップ
+            if (useData.getVacationGetDate().compareTo(vacationDeadline) > 0) {
+                continue;
+            }
+            // 残り日数がない場合はスキップ
+            if (!(vacationData.getDaysRemaining() > 0)) {
+                continue;
+            }
+            matchRecord = vacationData;
+            break;
+        }
+        
+        // この段階で null の場合はDB登録処理をスキップ
+        if (matchRecord == null) {
+            return mav;
+        }
+        
+        // Entity上で値を更新
+        int currentDay = matchRecord.getDaysRemaining();
+        matchRecord.setDaysRemaining(currentDay - 1);
+        
+        // 更新したEntityをDBに登録
+        vacationListRepositry.saveAndFlush(matchRecord);
 
         return mav;
     }
 
     @GetMapping("/detailInf")
     public ModelAndView detailInf(ModelAndView mav) {
+        // HTMLのファイル名を設定
         mav.setViewName("detail_inf"); 
        
+        // DBからデータの一覧を取得して、ThymeleafでHTMLに設定
         List<VacationData> vacations = vacationListRepositry.findAll();
         mav.addObject("vacationList", vacations);
 
+        // DBからデータの一覧を取得して、ThymeleafでHTMLに設定
         List<UseDataEntity> dbData = useDataRepositry.findAll();
-        System.out.println(dbData);
+        mav.addObject("useData", dbData);
+        
         return mav;
     } 
 
