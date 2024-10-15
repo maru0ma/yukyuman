@@ -21,12 +21,21 @@ public class HelloController {
     
     @GetMapping("/")
     public ModelAndView index(ModelAndView mav) {
+        // HTMLのファイル名を設定
         mav.setViewName("index");
-        mav.addObject("restDays",5);
-        mav.addObject("exactlyGetDays",2);
-        mav.addObject("disappearanceDays",1);
-        List<VacationData> list = vacationListRepositry.findAll();
-        System.out.println(list);
+        
+        // DBからデータをとってくる
+        List<VacationData> vacationDataList = vacationListRepositry.findAll();
+ 
+        // ここで計算をする
+        int daysRemainingSum = 0;
+        for (VacationData vacationData : vacationDataList) {
+            daysRemainingSum += vacationData.getDaysRemaining();
+        }
+        
+        // タイムリーフにセットする
+        mav.addObject("restDays", daysRemainingSum);
+        
         return mav;
     }
 
@@ -80,7 +89,6 @@ public class HelloController {
         
         // DBに登録
         useDataRepositry.saveAndFlush(useDataEntity);
-
         
         // 有給休暇一覧DBから現在の値を取得
         List<VacationData> vacations = vacationListRepositry.findAll();
@@ -113,6 +121,9 @@ public class HelloController {
             break;
         }
         
+        // todo:
+        // matchRecord はリストにして、一番古い日付のレコード1件分を抽出する実装をする
+        
         // この段階で null の場合はDB登録処理をスキップ
         if (matchRecord == null) {
             return mav;
@@ -142,7 +153,6 @@ public class HelloController {
         mav.addObject("useData", dbData);
         
         return mav;
-    } 
-
+    }
     
 }

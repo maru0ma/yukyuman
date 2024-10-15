@@ -9,10 +9,6 @@
     <h1>有給管理システム</h1>
     <div>残日数</div>
     <div th:text="${restDays}"></div>
-    <div>必須取得日数</div>
-    <div th:text="${exactlyGetDays}"></div>
-    <div>3ヶ月で消滅する日数</div>
-    <div th:text="${disappearanceDays}"></div>
 
     <div><a th:href="@{/entry}">有給付与</a></div>
     <div><a th:href="@{/use}">有給消化</a></div>
