@@ -1,4 +1,4 @@
-package com.example.yukyuman;
+package com.example.yukyuman.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
