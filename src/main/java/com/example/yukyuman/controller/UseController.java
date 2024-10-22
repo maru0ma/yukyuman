@@ -1,4 +1,4 @@
-package com.example.yukyuman;
+package com.example.yukyuman.controller;
 
 import java.util.List;
 
@@ -9,62 +9,21 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.yukyuman.entity.UseDataEntity;
+import com.example.yukyuman.entity.VacationData;
+import com.example.yukyuman.model.UseData;
+import com.example.yukyuman.repositry.UseDataRepositry;
+import com.example.yukyuman.repositry.VacationListRepositry;
+
 
 @Controller
-public class HelloController {
+public class UseController {
 
     @Autowired
-    VacationListRepositry vacationListRepositry;
+    private VacationListRepositry vacationListRepositry;
 
     @Autowired
-    UseDataRepositry useDataRepositry;
-    
-    @GetMapping("/")
-    public ModelAndView index(ModelAndView mav) {
-        // HTMLのファイル名を設定
-        mav.setViewName("index");
-        
-        // DBからデータをとってくる
-        List<VacationData> vacationDataList = vacationListRepositry.findAll();
- 
-        // ここで計算をする
-        int daysRemainingSum = 0;
-        for (VacationData vacationData : vacationDataList) {
-            daysRemainingSum += vacationData.getDaysRemaining();
-        }
-        
-        // タイムリーフにセットする
-        mav.addObject("restDays", daysRemainingSum);
-        
-        return mav;
-    }
-
-    @GetMapping("/entry")
-    public ModelAndView entry(ModelAndView mav) {
-        mav.setViewName("entry");
-        mav.addObject("message","");
-        return mav;
-    } 
-
-    @PostMapping("/entry")
-    public ModelAndView postEntry(ModelAndView mav, @ModelAttribute VacationEntry vacationEntry) {
-        // HTMLのファイル名を設定
-        mav.setViewName("entry");
-        
-        // 登録ボタン押下時にメッセージを表示
-        mav.addObject("message","登録しました");
-        
-        // POSTされたデータから値を取得してDB用にEntityを作成
-        VacationData vacationData = new VacationData();
-        vacationData.setVacationType(vacationEntry.getVacationType());
-        vacationData.setNumberOfDays(vacationEntry.getNumberOfDays());
-        vacationData.setVacationDeadline(vacationEntry.getVacationDeadline());
-        vacationData.setDaysRemaining(vacationEntry.getNumberOfDays());
-        
-        // DBに登録
-        vacationListRepositry.saveAndFlush(vacationData);
-        return mav;
-    }
+    private UseDataRepositry useDataRepositry;
 
     @GetMapping("/use")
     public ModelAndView use(ModelAndView mav) {
@@ -139,20 +98,4 @@ public class HelloController {
         return mav;
     }
 
-    @GetMapping("/detailInf")
-    public ModelAndView detailInf(ModelAndView mav) {
-        // HTMLのファイル名を設定
-        mav.setViewName("detail_inf"); 
-       
-        // DBからデータの一覧を取得して、ThymeleafでHTMLに設定
-        List<VacationData> vacations = vacationListRepositry.findAll();
-        mav.addObject("vacationList", vacations);
-
-        // DBからデータの一覧を取得して、ThymeleafでHTMLに設定
-        List<UseDataEntity> dbData = useDataRepositry.findAll();
-        mav.addObject("useData", dbData);
-        
-        return mav;
-    }
-    
 }
