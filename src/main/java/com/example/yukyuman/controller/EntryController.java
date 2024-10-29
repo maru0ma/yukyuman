@@ -7,16 +7,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.example.yukyuman.entity.VacationData;
 import com.example.yukyuman.model.VacationEntry;
-import com.example.yukyuman.repositry.VacationListRepositry;
+import com.example.yukyuman.service.EntryService;
 
 
 @Controller
 public class EntryController {
 
     @Autowired
-    private VacationListRepositry vacationListRepositry;
+    private EntryService entryService;
 
     @GetMapping("/entry")
     public ModelAndView entry(ModelAndView mav) {
@@ -33,15 +32,8 @@ public class EntryController {
         // 登録ボタン押下時にメッセージを表示
         mav.addObject("message","登録しました");
         
-        // POSTされたデータから値を取得してDB用にEntityを作成
-        VacationData vacationData = new VacationData();
-        vacationData.setVacationType(vacationEntry.getVacationType());
-        vacationData.setNumberOfDays(vacationEntry.getNumberOfDays());
-        vacationData.setVacationDeadline(vacationEntry.getVacationDeadline());
-        vacationData.setDaysRemaining(vacationEntry.getNumberOfDays());
-        
-        // DBに登録
-        vacationListRepositry.saveAndFlush(vacationData);
+        entryService.storeVacationEntry(vacationEntry);
+
         return mav;
     }
 
