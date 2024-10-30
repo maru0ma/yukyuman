@@ -4,14 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>有給管理システム</title>
+    <link href="https://use.fontawesome.com/releases/v6.6.0/css/all.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+    </style>
 </head>
 <body>
-    <h1>有給管理システム</h1>
-    <div>残日数</div>
-    <div th:text="${restDays}"></div>
-
-    <div><a th:href="@{/entry}">有給付与</a></div>
-    <div><a th:href="@{/use}">有給消化</a></div>
-    <div><a th:href="@{/detailInf}">詳細情報</a></div>
+    <div class="fixed top-0 bottom-0 lg:left-0 p-2 w-[300px] overflow-y-auto text-center bg-sky-400">
+        <div class="text-gray-100 text-xl">
+            <div class="p-2.5 mt-1 flex items-center">
+                <i class="fa-solid fa-robot"></i>
+                <h1 class="font-bold text-gray-200 text-lg ml-3">有給管理システム</h1>
+            </div>
+            <div class="my-2 bg-gray-700 h-[1px]"></div>
+        </div>
+        <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-gray-200">
+            <i class="fa-solid fa-house"></i>
+            <span class="text-[15px] ml-4 text-gray-700 font-bold">
+                <a th:href="@{/}">トップページ</a>
+            </span>
+        </div>
+        <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
+            <i class="fa-brands fa-font-awesome"></i>
+            <span class="text-[15px] ml-4 text-gray-200 font-bold">
+                <a th:href="@{/entry}">有給付与</a>
+            </span>
+        </div>
+        <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
+            <i class="fa-brands fa-font-awesome"></i>
+            <span class="text-[15px] ml-4 text-gray-200 font-bold">
+                <a th:href="@{/use}">有給消化</a>
+            </span>
+        </div>
+        <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
+            <i class="fa-brands fa-font-awesome"></i>
+            <span class="text-[15px] ml-4 text-gray-200 font-bold">
+               <a th:href="@{/detailInf}">詳細情報</a>
+            </span>
+        </div>
+    </div>
+    <div class="ml-[300px] p-[40px] w-[calc(100%-300px)]">
+        <h1 class="text-3xl font-bold text-gray-900 mb-10">TOP</h1>        
+        <div>残日数</div>
+        <div th:text="${restDays}"></div>
+    </div>
 </body>
 </html>

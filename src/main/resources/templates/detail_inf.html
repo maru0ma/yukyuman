@@ -4,59 +4,99 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>有給管理システム</title>
+    <link href="https://use.fontawesome.com/releases/v6.6.0/css/all.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+    </style>
 </head>
 <body>
-    <h1>詳細情報</h1>
-    <div>
-        <h2>有給休暇一覧</h2>
-        
-        <table>
-            <thead>
-              <tr>
-                <th>有給ID</th>
-                <th>有給種別</th>
-                <th>付与日数</th> 
-                <th>残り日数</th>
-                <th>有効期限</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr th:each="vacation : ${vacationList}">
-                <td th:text="${vacation.vacationId}"></td>
-                <td th:text="${vacation.vacationType}"></td>
-                <td th:text="${vacation.numberOfDays}"></td>
-                <td th:text="${vacation.daysRemaining}"></td>
-                <td th:text="${vacation.vacationDeadline}"></td>
-              </tr>
-            </tbody>
-          </table>
-
+  <div class="fixed top-0 bottom-0 lg:left-0 p-2 w-[300px] overflow-y-auto text-center bg-slate-600">
+    <div class="text-gray-100 text-xl">
+        <div class="p-2.5 mt-1 flex items-center">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <h1 class="font-bold text-gray-200 text-lg ml-3">有給管理システム</h1>
+        </div>
+        <div class="my-2 bg-gray-600 h-[1px]"></div>
     </div>
-    <div>
-        <h2>取得履歴</h2>
-        <table>
-            <thead>
-              <tr>
-                <th>休暇取得ID</th>
-                <th>休暇取得日</th>
-                <th>休暇種別</th> 
-                <th>休暇区分</th>
-                <th>メモ</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr th:each="dbDatas : ${useData}">
-                <td th:text="${dbDatas.vacationGetId}"></td>
-                <td th:text="${dbDatas.vacationData}"></td>
-                <td th:text="${dbDatas.vacationType}"></td>
-                <td th:text="${dbDatas.vacationSection}"></td>
-                <td th:text="${dbDatas.vacationGetNote}"></td>
-              </tr>
-            </tbody>
-          </table>
-
+    <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
+        <i class="fa-solid fa-house"></i>
+        <span class="text-[15px] ml-4 text-gray-200 font-bold">
+            <a th:href="@{/}">トップページ</a>
+        </span>
     </div>
+    <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
+        <i class="fa-brands fa-font-awesome"></i>
+        <span class="text-[15px] ml-4 text-gray-200 font-bold">
+            <a th:href="@{/entry}">有給付与</a>
+        </span>
+    </div>
+    <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
+        <i class="fa-brands fa-font-awesome"></i>
+        <span class="text-[15px] ml-4 text-gray-200 font-bold">
+            <a th:href="@{/use}">有給消化</a>
+        </span>
+    </div>
+    <div class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
+        <i class="fa-brands fa-font-awesome"></i>
+        <span class="text-[15px] ml-4 text-gray-200 font-bold">
+           <a th:href="@{/detailInf}">詳細情報</a>
+        </span>
+    </div>
+</div>
+<div class="ml-[300px] p-[40px] w-[calc(100%-300px)]">
+    <h1 class="text-3xl font-bold text-gray-900 mb-10">詳細情報</h1>
+    <div class="my-8">
+      <h2 class="text-2xl font-bold text-gray-800">有給休暇一覧</h2>
+      
+      <table class="border">
+          <thead>
+            <tr>
+              <th class="border">有給ID</th>
+              <th class="border">有給種別</th>
+              <th class="border">付与日数</th> 
+              <th class="border">残り日数</th>
+              <th class="border">有効期限</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="vacation : ${vacationList}">
+              <td class="border" th:text="${vacation.vacationId}"></td>
+              <td class="border" th:text="${vacation.vacationType}"></td>
+              <td class="border" th:text="${vacation.numberOfDays}"></td>
+              <td class="border" th:text="${vacation.daysRemaining}"></td>
+              <td class="border" th:text="${vacation.vacationDeadline}"></td>
+            </tr>
+          </tbody>
+        </table>
 
-    <div><a th:href="@{/}">TOPに戻る</a></div>
+  </div>
+  <div class="my-8">
+      <h2 class="text-2xl font-bold text-gray-800">取得履歴</h2>
+      <table class="border">
+          <thead>
+            <tr>
+              <th class="border">休暇取得ID</th>
+              <th class="border">休暇取得日</th>
+              <th class="border">休暇種別</th> 
+              <th class="border">休暇区分</th>
+              <th class="border">メモ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="dbDatas : ${useData}">
+              <td class="border" th:text="${dbDatas.vacationGetId}"></td>
+              <td class="border" th:text="${dbDatas.vacationData}"></td>
+              <td class="border" th:text="${dbDatas.vacationType}"></td>
+              <td class="border" th:text="${dbDatas.vacationSection}"></td>
+              <td class="border" th:text="${dbDatas.vacationGetNote}"></td>
+            </tr>
+          </tbody>
+        </table>
+  </div>
+</div>
 </body>
 </html>
